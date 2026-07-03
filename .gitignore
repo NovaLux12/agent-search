@@ -1,0 +1,16 @@
+# Build artifacts
+/agent-search
+/agent-search.exe
+/bin/
+/dist/
+*.test
+*.out
+
+# Editor/OS cruft
+.DS_Store
+.vscode/
+.idea/
+
+# Go workspace files (multi-module dev)
+/go.work
+/go.work.sum
