@@ -40,10 +40,11 @@ const Version = "0.1.0"
 // work, and we want to honor that without making them write "720h".
 //
 // Conversions:
-//   d  = 24h
-//   w  = 7d  = 168h
-//   mo = 30d = 720h   (approximate; Go has no native month)
-//   y  = 365d = 8760h (approximate)
+//
+//	d  = 24h
+//	w  = 7d  = 168h
+//	mo = 30d = 720h   (approximate; Go has no native month)
+//	y  = 365d = 8760h (approximate)
 //
 // Numeric forms are passed through to time.ParseDuration so the full
 // standard library syntax (e.g. "1h30m") keeps working.
@@ -78,9 +79,9 @@ func parseHumanDuration(s string) (time.Duration, error) {
 		return 0, fmt.Errorf("empty duration")
 	}
 	suffixes := []struct {
-		suf     string
-		mult    time.Duration
-		minLen  int // minimum token length including suffix
+		suf    string
+		mult   time.Duration
+		minLen int // minimum token length including suffix
 	}{
 		{"mo", 30 * 24 * time.Hour, 3},
 		{"y", 365 * 24 * time.Hour, 2},
@@ -119,21 +120,21 @@ func run(args []string, stdout, stderr io.Writer) int {
 	fs.SetOutput(stderr)
 
 	var (
-		capabilities  multiFlag
-		protocols     multiFlag
-		nameSub       = fs.String("name", "", "filter: agent.name must contain this substring (case-insensitive)")
-		handleSub     = fs.String("handle", "", "filter: agent.handle must contain this substring (case-insensitive)")
-		ownerSub      = fs.String("owner", "", "filter: owner.name must contain this substring (case-insensitive)")
-		trustLevel    = fs.String("trust-level", "", "filter: trust.level must equal one of new|active|established|verified")
-		hasCardURL    = fs.Bool("has-card-url", false, "filter: endpoints.card must be a non-empty http(s) URL")
-		stale         time.Duration
-		maxDepth      = fs.Int("max-depth", 16, "limit recursion depth (0 = no recursion)")
-		jsonOut       = fs.Bool("json", false, "output results as a JSON array")
-		quiet         = fs.Bool("quiet", false, "output only file paths, one per line")
-		includeInv    = fs.Bool("include-invalid", false, "include agent.json files that fail schema validation")
-		limit         = fs.Int("limit", 0, "stop after N matches (0 = unlimited)")
-		requireMatch  = fs.Bool("require-match", false, "exit 1 when no matches found")
-		showVersion   = fs.Bool("version", false, "print version and exit")
+		capabilities multiFlag
+		protocols    multiFlag
+		nameSub      = fs.String("name", "", "filter: agent.name must contain this substring (case-insensitive)")
+		handleSub    = fs.String("handle", "", "filter: agent.handle must contain this substring (case-insensitive)")
+		ownerSub     = fs.String("owner", "", "filter: owner.name must contain this substring (case-insensitive)")
+		trustLevel   = fs.String("trust-level", "", "filter: trust.level must equal one of new|active|established|verified")
+		hasCardURL   = fs.Bool("has-card-url", false, "filter: endpoints.card must be a non-empty http(s) URL")
+		stale        time.Duration
+		maxDepth     = fs.Int("max-depth", 16, "limit recursion depth (0 = no recursion)")
+		jsonOut      = fs.Bool("json", false, "output results as a JSON array")
+		quiet        = fs.Bool("quiet", false, "output only file paths, one per line")
+		includeInv   = fs.Bool("include-invalid", false, "include agent.json files that fail schema validation")
+		limit        = fs.Int("limit", 0, "stop after N matches (0 = unlimited)")
+		requireMatch = fs.Bool("require-match", false, "exit 1 when no matches found")
+		showVersion  = fs.Bool("version", false, "print version and exit")
 	)
 	fs.Var(&capabilities, "capability", "filter: agent must declare this capability (repeatable; AND-combined)")
 	fs.Var(&protocols, "protocol", "filter: protocols.<name> must be true (repeatable; mcp|a2a|agent-card|http)")
@@ -198,14 +199,14 @@ Exit codes:
 
 	// Build the query.
 	q := agentsearch.Query{
-		Capabilities:   capabilities,
-		NameSubstring:  *nameSub,
+		Capabilities:    capabilities,
+		NameSubstring:   *nameSub,
 		HandleSubstring: *handleSub,
-		OwnerSubstring: *ownerSub,
-		TrustLevel:     *trustLevel,
-		Protocols:      protocols,
-		HasCardURL:     *hasCardURL,
-		IncludeInvalid: *includeInv,
+		OwnerSubstring:  *ownerSub,
+		TrustLevel:      *trustLevel,
+		Protocols:       protocols,
+		HasCardURL:      *hasCardURL,
+		IncludeInvalid:  *includeInv,
 	}
 	if stale > 0 {
 		q.StaleThreshold = stale
@@ -317,7 +318,7 @@ func reorderArgs(args []string) []string {
 	}
 
 	var (
-		flags      []string
+		flags       []string
 		positionals []string
 	)
 	i := 0
@@ -343,6 +344,7 @@ func reorderArgs(args []string) []string {
 	}
 	return append(flags, positionals...)
 }
+
 // values. We can't use the same name for a String flag and a
 // repeatable flag, so this small helper makes the syntax readable.
 type multiFlag []string
