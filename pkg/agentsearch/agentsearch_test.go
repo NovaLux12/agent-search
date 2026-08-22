@@ -304,14 +304,14 @@ func TestSearch_StaleFilter(t *testing.T) {
         "agent": {"name": "F", "handle": "@f@f.com", "description": "x"},
         "owner": {"name": "O"},
         "endpoints": {"card": "https://example.com/.well-known/agent.json"},
-        "updated_at": "2026-07-03T00:00:00Z"
+        "updated_at": "` + time.Now().UTC().Add(-2*24*time.Hour).Format(time.RFC3339) + `"
     }`
 	stale := `{
         "version": "1.0",
         "agent": {"name": "S", "handle": "@s@s.com", "description": "x"},
         "owner": {"name": "O"},
         "endpoints": {"card": "https://example.com/.well-known/agent.json"},
-        "updated_at": "2025-01-01T00:00:00Z"
+        "updated_at": "` + time.Now().UTC().Add(-60*24*time.Hour).Format(time.RFC3339) + `"
     }`
 	writeCard(t, dir, "fresh.agent.json", fresh)
 	writeCard(t, dir, "stale.agent.json", stale)
