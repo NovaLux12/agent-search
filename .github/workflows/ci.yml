@@ -1,21 +1,10 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.26'
-      - name: Check formatting
-        run: test -z "$(gofmt -l .)" || { echo 'unformatted files:'; gofmt -l .; exit 1; }
-      - run: go vet ./...
-      - run: go test ./...
-      - run: go build ./...
+  ci:
+    uses: NovaLux12/.github/.github/workflows/go-ci.yml@main
+
