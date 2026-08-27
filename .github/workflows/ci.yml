@@ -7,4 +7,5 @@ on:
 jobs:
   ci:
     uses: NovaLux12/.github/.github/workflows/go-ci.yml@main
-
+    with:
+      run-build: false
