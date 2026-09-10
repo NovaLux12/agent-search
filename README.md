@@ -20,7 +20,7 @@ $ agent-search ./agents --stale-threshold 30d --quiet
 
 ## Why this exists
 
-The `reflectt/agent-identity-kit` v1 schema lets agents publish `agent.json` cards. If you're a directory operator (or just a curious developer with a folder of cards), you want to query them: "Which agents have `code-review` capability?", "Which agents claim `verified` trust?", "Which agents haven't been updated in 6 months?"
+The `NovaLux12/agent-identity-kit` v1 schema lets agents publish `agent.json` cards. If you're a directory operator (or just a curious developer with a folder of cards), you want to query them: "Which agents have `code-review` capability?", "Which agents claim `verified` trust?", "Which agents haven't been updated in 6 months?"
 
 `agent-search` walks a directory tree, parses each `agent.json` it finds, validates against the embedded schema (so it can ignore malformed cards without crashing), and lets you filter with flag-driven queries. Output is human-readable text by default, JSON with `--json`, or just paths with `--quiet`.
 
@@ -146,7 +146,7 @@ If you want to see malformed cards in the results, pass `--include-invalid`. The
 - [`NovaLux12/agent-validate`](../agent-validate) — schema library used for parsing
 - [`NovaLux12/agent-init`](../agent-init) — generate new agent.json cards
 - [`NovaLux12/agentcard-mcp`](../agentcard-mcp) — MCP server for the same data
-- [`reflectt/agent-identity-kit`](https://github.com/reflectt/agent-identity-kit) — the spec
+- [`NovaLux12/agent-identity-kit`](https://github.com/NovaLux12/agent-identity-kit) — the spec
 
 ## License
 
