@@ -1,0 +1,68 @@
+name: release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+          cache: true
+
+      # The asset names below are the ones v0.1.0 already published and the
+      # ones the README's install command downloads, so they must not
+      # change. The tar.gz members are named `agent-search` (no extension)
+      # and the zip member `agent-search.exe`, which is what the README's
+      # `tar xz -C /usr/local/bin agent-search` expects.
+      - name: Build and package
+        env:
+          CGO_ENABLED: 0
+        run: |
+          set -euo pipefail
+          mkdir -p dist/stage
+          LDFLAGS="-s -w"
+
+          for target in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64; do
+            os="${target%/*}"
+            arch="${target#*/}"
+            GOOS="$os" GOARCH="$arch" CGO_ENABLED=0 go build -ldflags "$LDFLAGS" -o dist/stage/agent-search ./cmd/agent-search
+            tar czf "dist/agent-search_${os}_${arch}.tar.gz" -C dist/stage agent-search
+            rm -f dist/stage/agent-search
+          done
+
+          for target in windows/amd64 windows/arm64; do
+            os="${target%/*}"
+            arch="${target#*/}"
+            GOOS="$os" GOARCH="$arch" CGO_ENABLED=0 go build -ldflags "$LDFLAGS" -o dist/stage/agent-search.exe ./cmd/agent-search
+            python3 -c "import zipfile; z=zipfile.ZipFile('dist/agent-search_${os}_${arch}.zip','w',zipfile.ZIP_DEFLATED); z.write('dist/stage/agent-search.exe','agent-search.exe'); z.close()"
+            rm -f dist/stage/agent-search.exe
+          done
+
+      - name: Checksums
+        run: |
+          cd dist
+          sha256sum agent-search_* > SHA256SUMS
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/agent-search_linux_amd64.tar.gz
+            dist/agent-search_linux_arm64.tar.gz
+            dist/agent-search_darwin_amd64.tar.gz
+            dist/agent-search_darwin_arm64.tar.gz
+            dist/agent-search_windows_amd64.zip
+            dist/agent-search_windows_arm64.zip
+            dist/SHA256SUMS
+          generate_release_notes: true
