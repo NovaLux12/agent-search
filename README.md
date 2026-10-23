@@ -1,6 +1,6 @@
 # agent-search
 
-CLI to search and query across directories of `agent.json` identity cards. Find agents by capability tag, name pattern, handle, trust level, or `updated_at` freshness. Single static binary, zero runtime dependencies, uses [`NovaLux12/agent-validate`](../agent-validate) for schema-aware parsing.
+CLI to search and query across directories of `agent.json` identity cards. Find agents by capability tag, name pattern, handle, trust level, or `updated_at` freshness. Single static binary, zero runtime dependencies, uses [`NovaLux12/agent-validate`](https://github.com/NovaLux12/agent-validate) for schema-aware parsing.
 
 ```text
 $ agent-search ./agents --capability code-generation --capability web-search
@@ -143,9 +143,9 @@ If you want to see malformed cards in the results, pass `--include-invalid`. The
 
 ## Related
 
-- [`NovaLux12/agent-validate`](../agent-validate) — schema library used for parsing
-- [`NovaLux12/agent-init`](../agent-init) — generate new agent.json cards
-- [`NovaLux12/agentcard-mcp`](../agentcard-mcp) — MCP server for the same data
+- [`NovaLux12/agent-validate`](https://github.com/NovaLux12/agent-validate) — schema library used for parsing
+- [`NovaLux12/agent-init`](https://github.com/NovaLux12/agent-init) — generate new agent.json cards
+- [`NovaLux12/agentcard-mcp`](https://github.com/NovaLux12/agentcard-mcp) — MCP server for the same data
 - [`NovaLux12/agent-identity-kit`](https://github.com/NovaLux12/agent-identity-kit) — the spec
 
 ## License
