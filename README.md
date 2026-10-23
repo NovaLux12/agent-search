@@ -1,6 +1,6 @@
 # agent-search
 
-CLI to search and query across directories of `agent.json` identity cards. Find agents by capability tag, name pattern, handle, trust level, or `updated_at` freshness. Single static binary, zero runtime dependencies, uses [`NovaLux12/agent-validate`](https://github.com/NovaLux12/agent-validate) for schema-aware parsing.
+CLI to search and query across directories of `agent.json` identity cards. Find agents by capability tag, name pattern, handle, trust level, or `updated_at` freshness. One self-contained binary per platform, no external runtime dependencies — the [`NovaLux12/agent-validate`](https://github.com/NovaLux12/agent-validate) validator and its schemas are compiled in. The `linux` builds are dynamically linked against glibc.
 
 ```text
 $ agent-search ./agents --capability code-generation --capability web-search
@@ -43,6 +43,20 @@ git clone https://github.com/NovaLux12/agent-search.git
 cd agent-search
 go build -ldflags="-s -w" -o agent-search ./cmd/agent-search
 ```
+
+### Dependencies
+
+Go module dependencies are compiled into the binary — nothing is downloaded or
+needed alongside it at runtime:
+
+| module | why |
+| --- | --- |
+| `github.com/NovaLux12/agent-validate` | schema validation; the v1–v1.3 schemas are embedded in that module (`go:embed`), so validation works offline |
+| `github.com/qri-io/jsonschema` | pulled in transitively by `agent-validate` |
+
+The published `linux` assets are dynamically linked against glibc (the release
+build does not set `CGO_ENABLED=0`); `darwin` assets link the system
+`libSystem`. Set `CGO_ENABLED=0` in the build to get a fully static binary.
 
 ## Usage
 
